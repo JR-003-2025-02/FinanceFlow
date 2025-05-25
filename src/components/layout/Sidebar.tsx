@@ -1,15 +1,14 @@
-
 import { Link, useLocation } from 'react-router-dom';
-import { calendar, list, settings } from 'lucide-react';
+import { Calendar, List, Settings } from 'lucide-react';
 
 const Sidebar = () => {
   const location = useLocation();
 
   const menuItems = [
-    { path: '/', label: 'Dashboard', icon: calendar },
-    { path: '/expenses', label: 'Expenses', icon: list },
-    { path: '/reports', label: 'Reports', icon: calendar },
-    { path: '/settings', label: 'Settings', icon: settings },
+    { path: '/', label: 'Dashboard', icon: Calendar },
+    { path: '/expenses', label: 'Expenses', icon: List },
+    { path: '/reports', label: 'Reports', icon: Calendar },
+    { path: '/settings', label: 'Settings', icon: Settings },
   ];
 
   return (
