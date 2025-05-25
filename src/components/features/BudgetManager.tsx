@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Plus, Edit, Trash2, Target } from 'lucide-react';
 
@@ -20,10 +19,14 @@ interface BudgetManagerProps {
 
 const BudgetManager = ({ budgets, categories, onAddBudget, onEditBudget, onDeleteBudget }: BudgetManagerProps) => {
   const [isAdding, setIsAdding] = useState(false);
-  const [newBudget, setNewBudget] = useState({
+  const [newBudget, setNewBudget] = useState<{
+    category: string;
+    amount: number;
+    period: 'monthly' | 'weekly' | 'yearly';
+  }>({
     category: '',
     amount: 0,
-    period: 'monthly' as const
+    period: 'monthly'
   });
 
   const handleAddBudget = () => {
