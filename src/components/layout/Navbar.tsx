@@ -2,10 +2,21 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Settings, User, LogOut, Menu, X } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 import ThemeToggle from '../common/ThemeToggle';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
@@ -30,14 +41,53 @@ const Navbar = () => {
           {/* User Menu */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <Link 
+              to="/settings"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
               <Settings size={20} className="text-gray-600 dark:text-gray-300" />
-            </button>
-            <div className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-              <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
-                <User size={16} className="text-white" />
-              </div>
-              <span className="font-medium text-gray-700 dark:text-gray-300 hidden sm:block">John Doe</span>
+            </Link>
+            
+            {/* User Profile Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              >
+                <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+                  <User size={16} className="text-white" />
+                </div>
+                <span className="font-medium text-gray-700 dark:text-gray-300 hidden sm:block">
+                  {user?.email?.split('@')[0] || 'User'}
+                </span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {isUserMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1">
+                  <div className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                    {user?.email}
+                  </div>
+                  <Link
+                    to="/settings"
+                    className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    <Settings size={16} className="mr-2" />
+                    Settings
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setIsUserMenuOpen(false);
+                    }}
+                    className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <LogOut size={16} className="mr-2" />
+                    Sign Out
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -61,6 +111,14 @@ const Navbar = () => {
             </Link>
           </div>
         </div>
+      )}
+
+      {/* Backdrop for user menu */}
+      {isUserMenuOpen && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setIsUserMenuOpen(false)}
+        />
       )}
     </nav>
   );

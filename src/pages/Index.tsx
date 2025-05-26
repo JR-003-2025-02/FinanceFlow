@@ -1,50 +1,49 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MainLayout from '../layouts/MainLayout';
 import DashboardStats from '../components/features/DashboardStats';
 import RecentExpenses from '../components/features/RecentExpenses';
 import SpendingChart from '../components/features/SpendingChart';
 import QuickActions from '../components/features/QuickActions';
+import { useExpenses } from '../hooks/useExpenses';
 
 const Index = () => {
-  const [expenses] = useState([
-    {
-      id: '1',
-      amount: 45.50,
-      category: 'Food & Dining',
-      description: 'Lunch at cafe',
-      date: '2024-05-25',
-      category_color: '#ef4444'
-    },
-    {
-      id: '2',
-      amount: 120.00,
-      category: 'Transportation',
-      description: 'Gas station',
-      date: '2024-05-24',
-      category_color: '#3b82f6'
-    },
-    {
-      id: '3',
-      amount: 89.99,
-      category: 'Shopping',
-      description: 'Online purchase',
-      date: '2024-05-23',
-      category_color: '#8b5cf6'
-    },
-    {
-      id: '4',
-      amount: 1200.00,
-      category: 'Housing',
-      description: 'Monthly rent',
-      date: '2024-05-01',
-      category_color: '#f59e0b'
-    }
-  ]);
+  const { expenses, loading, fetchExpenses } = useExpenses();
+  const [stats, setStats] = useState({
+    totalSpent: 0,
+    monthlyBudget: 3000,
+    budgetUsed: 0,
+    expenseCount: 0
+  });
 
-  const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  const monthlyBudget = 3000;
-  const budgetUsed = (totalSpent / monthlyBudget) * 100;
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
+
+  useEffect(() => {
+    if (expenses.length > 0) {
+      const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+      const monthlyBudget = 3000; // This could be user-configurable later
+      const budgetUsed = (totalSpent / monthlyBudget) * 100;
+      
+      setStats({
+        totalSpent,
+        monthlyBudget,
+        budgetUsed,
+        expenseCount: expenses.length
+      });
+    }
+  }, [expenses]);
+
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="flex items-center justify-center min-h-96">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
@@ -61,10 +60,10 @@ const Index = () => {
 
         {/* Dashboard Stats */}
         <DashboardStats 
-          totalSpent={totalSpent}
-          monthlyBudget={monthlyBudget}
-          budgetUsed={budgetUsed}
-          expenseCount={expenses.length}
+          totalSpent={stats.totalSpent}
+          monthlyBudget={stats.monthlyBudget}
+          budgetUsed={stats.budgetUsed}
+          expenseCount={stats.expenseCount}
         />
 
         {/* Main Content Grid */}
