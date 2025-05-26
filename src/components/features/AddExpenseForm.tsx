@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { DollarSign, Calendar, Tag, FileText, X } from 'lucide-react';
 import { useExpenses } from '../../hooks/useExpenses';
 import { useToast } from '@/hooks/use-toast';
+import FileUploader from './FileUploader';
 
 interface AddExpenseFormProps {
   categories: { name: string; color: string }[];
@@ -15,6 +15,7 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
     amount: '',
     category: '',
     date: new Date().toISOString().split('T')[0],
+    receiptUrl: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { addExpense } = useExpenses();
@@ -43,6 +44,7 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
         category: formData.category,
         category_color: categoryData?.color || '#3b82f6',
         date: formData.date,
+        receiptUrl: formData.receiptUrl,
       });
 
       toast({
@@ -55,6 +57,7 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
         amount: '',
         category: '',
         date: new Date().toISOString().split('T')[0],
+        receiptUrl: '',
       });
       onClose();
     } catch (error) {
@@ -66,6 +69,10 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleUploadComplete = (path: string) => {
+    setFormData(prev => ({ ...prev, receiptUrl: path }));
   };
 
   return (
@@ -133,6 +140,13 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
             className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             required
           />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Upload Receipt (Optional)
+          </label>
+          <FileUploader onUploadComplete={handleUploadComplete} />
         </div>
 
         <div className="flex space-x-3">
