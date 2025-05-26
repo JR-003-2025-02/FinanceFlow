@@ -5,7 +5,7 @@ import DashboardStats from '../components/features/DashboardStats';
 import RecentExpenses from '../components/features/RecentExpenses';
 import SpendingChart from '../components/features/SpendingChart';
 import QuickActions from '../components/features/QuickActions';
-import { useExpenses } from '../hooks/useExpenses';
+import { useExpenses, type Expense } from '../hooks/useExpenses';
 
 const Index = () => {
   const { expenses, loading, fetchExpenses } = useExpenses();
