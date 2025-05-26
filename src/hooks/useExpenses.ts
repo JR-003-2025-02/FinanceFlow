@@ -140,6 +140,7 @@ export const useExpenses = () => {
     addExpense,
     updateExpense,
     deleteExpense,
+    fetchExpenses,
     refetch: fetchExpenses,
   };
 };
