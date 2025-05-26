@@ -1,11 +1,11 @@
 
 interface Expense {
-  id: number;
+  id: string;
   amount: number;
   category: string;
   description: string;
   date: string;
-  categoryColor: string;
+  category_color: string;
 }
 
 interface RecentExpensesProps {
@@ -24,11 +24,11 @@ const RecentExpenses = ({ expenses }: RecentExpensesProps) => {
             <div className="flex items-center space-x-3">
               <div 
                 className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: expense.categoryColor + '20' }}
+                style={{ backgroundColor: expense.category_color + '20' }}
               >
                 <div 
                   className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: expense.categoryColor }}
+                  style={{ backgroundColor: expense.category_color }}
                 ></div>
               </div>
               <div>

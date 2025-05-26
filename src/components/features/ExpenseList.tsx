@@ -2,12 +2,12 @@
 import { useState } from 'react';
 
 interface Expense {
-  id: number;
+  id: string;
   amount: number;
   category: string;
   description: string;
   date: string;
-  categoryColor: string;
+  category_color: string;
 }
 
 interface ExpenseListProps {
@@ -72,11 +72,11 @@ const ExpenseList = ({ expenses }: ExpenseListProps) => {
                 <div className="flex items-center space-x-4">
                   <div 
                     className="w-12 h-12 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: expense.categoryColor + '20' }}
+                    style={{ backgroundColor: expense.category_color + '20' }}
                   >
                     <div 
                       className="w-6 h-6 rounded-full"
-                      style={{ backgroundColor: expense.categoryColor }}
+                      style={{ backgroundColor: expense.category_color }}
                     ></div>
                   </div>
                   <div>

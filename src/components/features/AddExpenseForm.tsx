@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Plus, DollarSign, Calendar, Tag, FileText } from 'lucide-react';
 import { useExpenses } from '../../hooks/useExpenses';
@@ -30,7 +29,7 @@ const AddExpenseForm = ({ categories }: AddExpenseFormProps) => {
       description: formData.description,
       amount: parseFloat(formData.amount),
       category: formData.category,
-      categoryColor: categoryData?.color || '#3b82f6',
+      category_color: categoryData?.color || '#3b82f6',
       date: formData.date,
     });
 

@@ -10,9 +10,10 @@ export interface Expense {
   category: string;
   description: string;
   date: string;
-  categoryColor: string;
+  category_color: string;
   user_id: string;
   created_at: string;
+  updated_at: string;
 }
 
 export const useExpenses = () => {
@@ -44,14 +45,18 @@ export const useExpenses = () => {
     }
   };
 
-  const addExpense = async (expense: Omit<Expense, 'id' | 'user_id' | 'created_at'>) => {
+  const addExpense = async (expense: Omit<Expense, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => {
     if (!user) return;
 
     try {
       const { data, error } = await supabase
         .from('expenses')
         .insert([{
-          ...expense,
+          description: expense.description,
+          amount: expense.amount,
+          category: expense.category,
+          category_color: expense.category_color,
+          date: expense.date,
           user_id: user.id,
         }])
         .select()
