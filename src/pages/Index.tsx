@@ -7,7 +7,7 @@ import SpendingChart from '../components/features/SpendingChart';
 import QuickActions from '../components/features/QuickActions';
 import BudgetTracker from '../components/features/BudgetTracker';
 import FinancialSummary from '../components/features/FinancialSummary';
-import { useExpenses, type Expense } from '../hooks/useExpenses';
+import { useExpenses } from '../hooks/useExpenses';
 
 const Index = () => {
   const { expenses, loading, fetchExpenses } = useExpenses();

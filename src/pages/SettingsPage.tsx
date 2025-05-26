@@ -5,8 +5,22 @@ import CustomCategoryManager from '../components/features/CustomCategoryManager'
 import BudgetManager from '../components/features/BudgetManager';
 import UserProfile from '../components/features/UserProfile';
 
+interface Category {
+  id: string;
+  name: string;
+  color: string;
+}
+
+interface Budget {
+  id: string;
+  category: string;
+  amount: number;
+  period: 'monthly' | 'weekly' | 'yearly';
+  spent: number;
+}
+
 const SettingsPage = () => {
-  const [categories, setCategories] = useState([
+  const [categories, setCategories] = useState<Category[]>([
     { id: '1', name: 'Food & Dining', color: '#ef4444' },
     { id: '2', name: 'Transportation', color: '#3b82f6' },
     { id: '3', name: 'Shopping', color: '#8b5cf6' },
@@ -17,17 +31,17 @@ const SettingsPage = () => {
     { id: '8', name: 'Other', color: '#6b7280' }
   ]);
   
-  const [budgets, setBudgets] = useState([]);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
 
-  const handleAddCategory = (category: Omit<any, 'id'>) => {
-    const newCategory = {
+  const handleAddCategory = (category: Omit<Category, 'id'>) => {
+    const newCategory: Category = {
       ...category,
       id: Date.now().toString(),
     };
     setCategories([...categories, newCategory]);
   };
 
-  const handleEditCategory = (id: string, updates: Partial<any>) => {
+  const handleEditCategory = (id: string, updates: Partial<Category>) => {
     setCategories(categories.map(cat => 
       cat.id === id ? { ...cat, ...updates } : cat
     ));
@@ -37,8 +51,8 @@ const SettingsPage = () => {
     setCategories(categories.filter(cat => cat.id !== id));
   };
 
-  const handleAddBudget = (budget: Omit<any, 'id' | 'spent'>) => {
-    const newBudget = {
+  const handleAddBudget = (budget: Omit<Budget, 'id' | 'spent'>) => {
+    const newBudget: Budget = {
       ...budget,
       id: Date.now().toString(),
       spent: 0,
@@ -46,7 +60,7 @@ const SettingsPage = () => {
     setBudgets([...budgets, newBudget]);
   };
 
-  const handleEditBudget = (id: string, updates: Partial<any>) => {
+  const handleEditBudget = (id: string, updates: Partial<Budget>) => {
     setBudgets(budgets.map(budget => 
       budget.id === id ? { ...budget, ...updates } : budget
     ));

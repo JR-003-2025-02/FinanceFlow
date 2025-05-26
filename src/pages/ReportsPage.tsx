@@ -4,6 +4,7 @@ import SpendingTrends from '../components/features/SpendingTrends';
 import CategoryInsights from '../components/features/CategoryInsights';
 import AnalyticsDashboard from '../components/features/AnalyticsDashboard';
 import BudgetTracker from '../components/features/BudgetTracker';
+import DataImportExport from '../components/features/DataImportExport';
 import { useExpenses } from '../hooks/useExpenses';
 import { useEffect } from 'react';
 
@@ -83,6 +84,9 @@ const ReportsPage = () => {
             Deep insights into your spending patterns and financial trends
           </p>
         </div>
+
+        {/* Data Import/Export */}
+        <DataImportExport />
 
         {/* Enhanced Analytics */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

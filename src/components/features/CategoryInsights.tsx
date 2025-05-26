@@ -1,6 +1,6 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
-import { Pie as PieIcon, DollarSign } from 'lucide-react';
+import { PieChart as PieIcon, DollarSign } from 'lucide-react';
 import { useExpenses } from '@/hooks/useExpenses';
 import { useMemo } from 'react';
 
