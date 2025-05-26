@@ -9,36 +9,36 @@ import QuickActions from '../components/features/QuickActions';
 const Index = () => {
   const [expenses] = useState([
     {
-      id: 1,
+      id: '1',
       amount: 45.50,
       category: 'Food & Dining',
       description: 'Lunch at cafe',
       date: '2024-05-25',
-      categoryColor: '#ef4444'
+      category_color: '#ef4444'
     },
     {
-      id: 2,
+      id: '2',
       amount: 120.00,
       category: 'Transportation',
       description: 'Gas station',
       date: '2024-05-24',
-      categoryColor: '#3b82f6'
+      category_color: '#3b82f6'
     },
     {
-      id: 3,
+      id: '3',
       amount: 89.99,
       category: 'Shopping',
       description: 'Online purchase',
       date: '2024-05-23',
-      categoryColor: '#8b5cf6'
+      category_color: '#8b5cf6'
     },
     {
-      id: 4,
+      id: '4',
       amount: 1200.00,
       category: 'Housing',
       description: 'Monthly rent',
       date: '2024-05-01',
-      categoryColor: '#f59e0b'
+      category_color: '#f59e0b'
     }
   ]);
 
