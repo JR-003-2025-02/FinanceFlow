@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { useAuth } from '../contexts/AuthContext';
@@ -14,6 +13,7 @@ export interface Expense {
   user_id: string;
   created_at: string;
   updated_at: string;
+  receiptUrl?: string;
 }
 
 export const useExpenses = () => {
@@ -57,6 +57,7 @@ export const useExpenses = () => {
           category: expense.category,
           category_color: expense.category_color,
           date: expense.date,
+          receipt_url: expense.receiptUrl,
           user_id: user.id,
         }])
         .select()
