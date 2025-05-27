@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { DollarSign, Calendar, Tag, FileText, X, Zap } from 'lucide-react';
 import { useExpenses } from '../../hooks/useExpenses';
@@ -23,13 +22,27 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
   const { addExpense } = useExpenses();
   const { toast } = useToast();
 
+  const validateAmount = (amount: string): boolean => {
+    const numAmount = parseFloat(amount);
+    return !isNaN(numAmount) && numAmount > 0 && numAmount <= 1000000;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.amount || !formData.category) {
+    if (!validateAmount(formData.amount)) {
       toast({
-        title: "Error",
-        description: "Please enter an amount and select a category.",
+        title: "Invalid Amount",
+        description: "Please enter a valid amount between 0 and 1,000,000",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.category) {
+      toast({
+        title: "Category Required",
+        description: "Please select a category for the expense",
         variant: "destructive",
       });
       return;
@@ -62,7 +75,7 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
         receiptUrl: '',
       });
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
         description: "Failed to add expense. Please try again.",
@@ -94,7 +107,6 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
         </button>
       </div>
 
-      {/* Quick Mode Toggle */}
       <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
         <div className="flex items-center space-x-2">
           <Zap size={16} className="text-blue-500" />
@@ -116,13 +128,13 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Amount - Always Required */}
         <div className="relative">
           <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="number"
             step="0.01"
             min="0"
+            max="1000000"
             placeholder="Amount *"
             value={formData.amount}
             onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
@@ -131,7 +143,6 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
           />
         </div>
 
-        {/* Category - Always Required */}
         <div className="relative">
           <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <select
@@ -149,7 +160,6 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
           </select>
         </div>
 
-        {/* Optional Fields - Only in Detailed Mode */}
         {!quickMode && (
           <>
             <div className="relative">
