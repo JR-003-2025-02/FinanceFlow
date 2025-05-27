@@ -9,6 +9,19 @@ interface AddExpenseFormProps {
   onClose: () => void;
 }
 
+const CURRENCIES = [
+  { code: 'USD', symbol: '$', name: 'US Dollar' },
+  { code: 'EUR', symbol: '€', name: 'Euro' },
+  { code: 'GBP', symbol: '£', name: 'British Pound' },
+  { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+  { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
+  { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+  { code: 'CAD', symbol: '$', name: 'Canadian Dollar' },
+  { code: 'AUD', symbol: '$', name: 'Australian Dollar' },
+  { code: 'CHF', symbol: 'Fr', name: 'Swiss Franc' },
+  { code: 'SGD', symbol: '$', name: 'Singapore Dollar' },
+];
+
 const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
   const [formData, setFormData] = useState({
     description: '',
@@ -16,6 +29,7 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
     category: '',
     date: new Date().toISOString().split('T')[0],
     receiptUrl: '',
+    currency: 'USD'
   });
   const [quickMode, setQuickMode] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,6 +74,7 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
         category_color: categoryData?.color || '#3b82f6',
         date: formData.date,
         receiptUrl: formData.receiptUrl,
+        currency: formData.currency
       });
 
       toast({
@@ -73,6 +88,7 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
         category: '',
         date: new Date().toISOString().split('T')[0],
         receiptUrl: '',
+        currency: 'USD'
       });
       onClose();
     } catch (error: any) {
@@ -89,6 +105,8 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
   const handleUploadComplete = (path: string) => {
     setFormData(prev => ({ ...prev, receiptUrl: path }));
   };
+
+  const selectedCurrency = CURRENCIES.find(c => c.code === formData.currency) || CURRENCIES[0];
 
   return (
     <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 max-w-md mx-auto">
@@ -128,19 +146,35 @@ const AddExpenseForm = ({ categories, onClose }: AddExpenseFormProps) => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="relative">
-          <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-          <input
-            type="number"
-            step="0.01"
-            min="0"
-            max="1000000"
-            placeholder="Amount *"
-            value={formData.amount}
-            onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500"
-            required
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div className="relative">
+            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              max="1000000"
+              placeholder="Amount *"
+              value={formData.amount}
+              onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <select
+              value={formData.currency}
+              onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+              className="w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            >
+              {CURRENCIES.map((currency) => (
+                <option key={currency.code} value={currency.code}>
+                  {currency.code} ({currency.symbol})
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="relative">
