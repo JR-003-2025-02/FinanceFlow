@@ -2,10 +2,15 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
 interface Expense {
-  id: number;
+  id: string;
   amount: number;
   category: string;
-  categoryColor: string;
+  description: string;
+  date: string;
+  category_color: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface SpendingChartProps {
@@ -21,7 +26,7 @@ const SpendingChart = ({ expenses }: SpendingChartProps) => {
       acc.push({
         name: expense.category,
         value: expense.amount,
-        color: expense.categoryColor
+        color: expense.category_color
       });
     }
     return acc;
